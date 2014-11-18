@@ -22,6 +22,9 @@ namespace WebApi.OutputCache.V2
     {
         protected static MediaTypeHeaderValue DefaultMediaType = new MediaTypeHeaderValue("application/json");
 
+        private TimeSpan _serverTimeSpan = TimeSpan.FromSeconds(0);
+        private TimeSpan _clientTimeSpan = TimeSpan.FromSeconds(0);
+
         /// <summary>
         /// Cache enabled only for requests when Thread.CurrentPrincipal is not set
         /// </summary>
@@ -40,12 +43,74 @@ namespace WebApi.OutputCache.V2
         /// <summary>
         /// How long response should be cached on the server side (in seconds)
         /// </summary>
-        public int ServerTimeSpan { get; set; }
+        public int ServerTimeSpanInSeconds
+        {
+            get { return (int)_serverTimeSpan.TotalSeconds; }
+            set { _serverTimeSpan = TimeSpan.FromSeconds(value); }
+        }
+
+        /// <summary>
+        /// How long response should be cached on the server side (in minutes)
+        /// </summary>
+        public int ServerTimeSpanInMinutes
+        {
+            get { return (int)_serverTimeSpan.TotalMinutes; }
+            set { _serverTimeSpan = TimeSpan.FromMinutes(value); }
+        }
+
+        /// <summary>
+        /// How long response should be cached on the server side (in hours)
+        /// </summary>
+        public int ServerTimeSpanInHours
+        {
+            get { return (int)_serverTimeSpan.TotalHours; }
+            set { _serverTimeSpan = TimeSpan.FromHours(value); }
+        }
+
+        /// <summary>
+        /// How long response should be cached on the server side (in days)
+        /// </summary>
+        public int ServerTimeSpanInDays
+        {
+            get { return (int)_serverTimeSpan.TotalDays; }
+            set { _serverTimeSpan = TimeSpan.FromDays(value); }
+        }
 
         /// <summary>
         /// Corresponds to CacheControl MaxAge HTTP header (in seconds)
         /// </summary>
-        public int ClientTimeSpan { get; set; }
+        public int ClientTimeSpanInSeconds
+        {
+            get { return (int)_clientTimeSpan.TotalSeconds; }
+            set { _clientTimeSpan = TimeSpan.FromSeconds(value); }
+        }
+
+        /// <summary>
+        /// Corresponds to CacheControl MaxAge HTTP header (in minutes)
+        /// </summary>
+        public int ClientTimeSpanInMinutes
+        {
+            get { return (int)_clientTimeSpan.TotalMinutes; }
+            set { _clientTimeSpan = TimeSpan.FromMinutes(value); }
+        }
+
+        /// <summary>
+        /// Corresponds to CacheControl MaxAge HTTP header (in hours)
+        /// </summary>
+        public int ClientTimeSpanInHours
+        {
+            get { return (int)_clientTimeSpan.TotalHours; }
+            set { _clientTimeSpan = TimeSpan.FromHours(value); }
+        }
+
+        /// <summary>
+        /// Corresponds to CacheControl MaxAge HTTP header (in days)
+        /// </summary>
+        public int ClientTimeSpanInDays
+        {
+            get { return (int)_clientTimeSpan.TotalDays; }
+            set { _clientTimeSpan = TimeSpan.FromDays(value); }
+        }
 
         /// <summary>
         /// Corresponds to CacheControl NoCache HTTP header
@@ -90,7 +155,7 @@ namespace WebApi.OutputCache.V2
 
         protected void ResetCacheTimeQuery()
         {
-            CacheTimeQuery = new ShortTime( ServerTimeSpan, ClientTimeSpan );
+            CacheTimeQuery = new ShortTime( _serverTimeSpan.Seconds, _clientTimeSpan.Seconds );
         }
 
         protected virtual MediaTypeHeaderValue GetExpectedMediaType(HttpConfiguration config, HttpActionContext actionContext)

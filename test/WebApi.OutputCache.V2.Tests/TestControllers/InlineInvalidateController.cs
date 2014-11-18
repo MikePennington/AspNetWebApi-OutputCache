@@ -4,33 +4,33 @@ namespace WebApi.OutputCache.V2.Tests.TestControllers
 {
     public class InlineInvalidateController : ApiController
     {
-        [CacheOutput(ClientTimeSpan = 100, ServerTimeSpan = 100)]
+        [CacheOutput(ClientTimeSpanInSeconds = 100, ServerTimeSpanInSeconds = 100)]
         public string Get_c100_s100()
         {
             return "test";
         }
 
-        [CacheOutput(ClientTimeSpan = 100, ServerTimeSpan = 100)]
+        [CacheOutput(ClientTimeSpanInSeconds = 100, ServerTimeSpanInSeconds = 100)]
         public string Get_c100_s100_with_param(int id)
         {
             return "test";
         }
 
         [ActionName("getById")]
-        [CacheOutput(ClientTimeSpan = 100, ServerTimeSpan = 100)]
+        [CacheOutput(ClientTimeSpanInSeconds = 100, ServerTimeSpanInSeconds = 100)]
         public string Get_c100_s100(int id)
         {
             return "test";
         }
 
-        [CacheOutput(ServerTimeSpan = 50)]
+        [CacheOutput(ClientTimeSpanInSeconds = 50)]
         public string Get_s50_exclude_fakecallback(int id = 0, string callback = null, string de = null)
         {
             return "test";
         }
 
         [HttpGet]
-        [CacheOutput(AnonymousOnly = true, ClientTimeSpan = 50, ServerTimeSpan = 50)]
+        [CacheOutput(AnonymousOnly = true, ClientTimeSpanInSeconds = 50, ServerTimeSpanInSeconds = 50)]
         public string etag_match_304()
         {
             return "value";

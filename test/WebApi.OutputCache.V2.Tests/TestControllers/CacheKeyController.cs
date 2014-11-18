@@ -14,7 +14,7 @@ namespace WebApi.OutputCache.V2.Tests.TestControllers
             }
         }
 
-        [CacheOutput(CacheKeyGenerator = typeof(CacheKeyGeneratorTests.CustomCacheKeyGenerator), ClientTimeSpan = 100, ServerTimeSpan = 100)]
+        [CacheOutput(CacheKeyGenerator = typeof(CacheKeyGeneratorTests.CustomCacheKeyGenerator), ClientTimeSpanInSeconds = 100, ServerTimeSpanInSeconds = 100)]
         public string Get_custom_key()
         {
             return "test";
@@ -26,7 +26,7 @@ namespace WebApi.OutputCache.V2.Tests.TestControllers
             return "test";
         }
 
-        [CacheOutput(CacheKeyGenerator = typeof(CacheKeyGeneratorRegistrationTests.InternalRegisteredCacheKeyGenerator), ServerTimeSpan = 100)]
+        [CacheOutput(CacheKeyGenerator = typeof(CacheKeyGeneratorRegistrationTests.InternalRegisteredCacheKeyGenerator), ServerTimeSpanInSeconds = 100)]
         public string Get_internalregistered()
         {
             return "test";

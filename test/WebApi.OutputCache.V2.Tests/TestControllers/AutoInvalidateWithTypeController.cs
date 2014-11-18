@@ -6,19 +6,19 @@ namespace WebApi.OutputCache.V2.Tests.TestControllers
     [AutoInvalidateCacheOutput(TryMatchType = true)]
     public class AutoInvalidateWithTypeController : ApiController
     {
-        [CacheOutput(ClientTimeSpan = 100, ServerTimeSpan = 100)]
+        [CacheOutput(ClientTimeSpanInSeconds = 100, ServerTimeSpanInSeconds = 100)]
         public string Get_c100_s100()
         {
             return "test";
         }
 
-        [CacheOutput(ClientTimeSpan = 100, ServerTimeSpan = 100)]
+        [CacheOutput(ClientTimeSpanInSeconds = 100, ServerTimeSpanInSeconds = 100)]
         public List<string> Get_c100_s100_array()
         {
             return new List<string> {"test"};
         }
 
-        [CacheOutput(ServerTimeSpan = 50)]
+        [CacheOutput(ServerTimeSpanInSeconds = 50)]
         public int Get_s50_exclude_fakecallback(int id = 0, string callback = null, string de = null)
         {
             return 7;

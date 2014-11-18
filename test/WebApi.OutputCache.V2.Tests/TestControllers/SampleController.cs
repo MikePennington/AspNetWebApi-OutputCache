@@ -7,19 +7,19 @@ namespace WebApi.OutputCache.V2.Tests.TestControllers
 {
     public class SampleController : ApiController
     {
-        [CacheOutput(ClientTimeSpan = 100, ServerTimeSpan = 100)]
+        [CacheOutput(ClientTimeSpanInSeconds = 100, ServerTimeSpanInSeconds = 100)]
         public string Get_c100_s100()
         {
             return "test";
         }
 
-        [CacheOutput(ClientTimeSpan = 100, ServerTimeSpan = 0)]
+        [CacheOutput(ClientTimeSpanInSeconds = 100, ServerTimeSpanInSeconds = 0)]
         public string Get_c100_s0()
         {
             return "test";
         }
 
-        [CacheOutput(ClientTimeSpan = 0, ServerTimeSpan = 100)]
+        [CacheOutput(ClientTimeSpanInSeconds = 0, ServerTimeSpanInSeconds = 100)]
         public string Get_c0_s100()
         {
             return "test";
@@ -31,19 +31,19 @@ namespace WebApi.OutputCache.V2.Tests.TestControllers
             return "test";
         }
 
-		[CacheOutput(ClientTimeSpan = 0, ServerTimeSpan = 100, MustRevalidate = true)]
+        [CacheOutput(ClientTimeSpanInSeconds = 0, ServerTimeSpanInSeconds = 100, MustRevalidate = true)]
 		public string Get_c0_s100_mustR()
 		{
 			return "test";
 		}
 
-        [CacheOutput(ClientTimeSpan = 50, MustRevalidate = true)]
+        [CacheOutput(ClientTimeSpanInSeconds = 50, MustRevalidate = true)]
         public string Get_c50_mustR()
         {
             return "test";
         }
 
-        [CacheOutput(ClientTimeSpan = 50, Private = true)]
+        [CacheOutput(ClientTimeSpanInSeconds = 50, Private = true)]
         public string Get_c50_private()
         {
             return "test";
@@ -55,19 +55,19 @@ namespace WebApi.OutputCache.V2.Tests.TestControllers
             return "test";
         }
 
-        [CacheOutput(ServerTimeSpan = 50)]
+        [CacheOutput(ServerTimeSpanInSeconds = 50)]
         public string Get_s50_exclude_fakecallback(int? id = null, string callback = null, string de = null)
         {
             return "test";
         }
 
-        [CacheOutput(ServerTimeSpan = 50, ExcludeQueryStringFromCacheKey = false)]
+        [CacheOutput(ServerTimeSpanInSeconds = 50, ExcludeQueryStringFromCacheKey = false)]
         public string Get_s50_exclude_false(int id)
         {
             return "test"+id;
         }
 
-        [CacheOutput(ServerTimeSpan = 50, ExcludeQueryStringFromCacheKey = true)]
+        [CacheOutput(ServerTimeSpanInSeconds = 50, ExcludeQueryStringFromCacheKey = true)]
         public string Get_s50_exclude_true(int id)
         {
             return "test" + id;
@@ -103,32 +103,32 @@ namespace WebApi.OutputCache.V2.Tests.TestControllers
             return "value";
         }
 
-        [CacheOutput(AnonymousOnly = true, ClientTimeSpan = 50, ServerTimeSpan = 50)]
+        [CacheOutput(AnonymousOnly = true, ClientTimeSpanInSeconds = 50, ServerTimeSpanInSeconds = 50)]
         public string Get_s50_c50_anonymousonly()
         {
             return "value";
         }
 
         [HttpGet]
-        [CacheOutput(AnonymousOnly = true, ClientTimeSpan = 50, ServerTimeSpan = 50)]
+        [CacheOutput(AnonymousOnly = true, ClientTimeSpanInSeconds = 50, ServerTimeSpanInSeconds = 50)]
         public string etag_match_304()
         {
             return "value";
         }
 
-        [CacheOutput(ClientTimeSpan = 50, ServerTimeSpan = 50)]
+        [CacheOutput(ClientTimeSpanInSeconds = 50, ServerTimeSpanInSeconds = 50)]
         public string Get_request_exception_noCache()
         {
             throw new System.Exception("Fault shouldn't cache");
         }
 
-        [CacheOutput(ClientTimeSpan = 50, ServerTimeSpan = 50)]
+        [CacheOutput(ClientTimeSpanInSeconds = 50, ServerTimeSpanInSeconds = 50)]
         public string Get_request_httpResponseException_noCache()
         {
             throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Conflict){ReasonPhrase = "Fault shouldn't cache"});
         }
 
-        [CacheOutput(ClientTimeSpan = 50, ServerTimeSpan = 50)]
+        [CacheOutput(ClientTimeSpanInSeconds = 50, ServerTimeSpanInSeconds = 50)]
         public HttpResponseMessage Get_request_noContent()
         {
             return Request.CreateResponse(HttpStatusCode.Accepted);
