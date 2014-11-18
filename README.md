@@ -6,11 +6,11 @@ A small library bringing caching options, similar to MVC's "OutputCacheAttribute
 **CacheOutput** will take care of server side caching and set the appropriate client side (response) headers for you.
 
 You can specify the following properties:
- - *ClientTimeSpan* (corresponds to CacheControl MaxAge HTTP header)
+ - *ClientTimeSpanInSeconds/Minutes/Hours/Days* (corresponds to CacheControl MaxAge HTTP header)
  - *MustRevalidate* (corresponds to MustRevalidate HTTP header - indicates whether the origin server requires revalidation of 
 a cache entry on any subsequent use when the cache entry becomes stale)
  - *ExcludeQueryStringFromCacheKey* (do not vary cache by querystring values)
- - *ServerTimeSpan* (time how long the response should be cached on the server side)
+ - *ServerTimeSpanInSeconds/Minutes/Hours/Days* (time how long the response should be cached on the server side)
  - *AnonymousOnly* (cache enabled only for requests when Thread.CurrentPrincipal is not set)
  
 Additionally, the library is setting ETags for you, and keeping them unchanged for the duration of the caching period.
@@ -33,28 +33,28 @@ Usage
 --------------------
 
 	//Cache for 100s on the server, inform the client that response is valid for 100s
-        [CacheOutput(ClientTimeSpan = 100, ServerTimeSpan = 100)]
+        [CacheOutput(ClientTimeSpanInSeconds = 100, ServerTimeSpanInSeconds = 100)]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
         }
 
 	//Cache for 100s on the server, inform the client that response is valid for 100s. Cache for anonymous users only.
-        [CacheOutput(ClientTimeSpan = 100, ServerTimeSpan = 100, AnonymousOnly = true)]
+        [CacheOutput(ClientTimeSpanInSeconds = 100, ServerTimeSpanInSeconds = 100, AnonymousOnly = true)]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
         }
 
 	//Inform the client that response is valid for 50s. Force client to revalidate.
-        [CacheOutput(ClientTimeSpan = 50, MustRevalidate = true)]
+        [CacheOutput(ClientTimeSpanInSeconds = 50, MustRevalidate = true)]
         public string Get(int id)
         {
             return "value";
         }
 
 	//Cache for 50s on the server. Ignore querystring parameters when serving cached content.
-        [CacheOutput(ServerTimeSpan = 50, ExcludeQueryStringFromCacheKey = true)]
+        [CacheOutput(ServerTimeSpanInSeconds = 50, ExcludeQueryStringFromCacheKey = true)]
         public string Get(int id)
         {
             return "value";
@@ -112,14 +112,14 @@ Each individual content type response is cached separately (so out of the box, y
 
 So you either should use unique method names inside a single controller, or (if you really want to keep them the same names when overloading) you need to use *ActionName* attribute to provide uniqeness for caching. Example:
 
-        [CacheOutput(ClientTimeSpan = 50, ServerTimeSpan = 50)]
+        [CacheOutput(ClientTimeSpanInSeconds = 50, ServerTimeSpanInSeconds = 50)]
         public IEnumerable<Team> Get()
         {
             return Teams;
         }
 
         [ActionName("GetById")]
-        [CacheOutput(ClientTimeSpan = 50, ServerTimeSpan = 50)]
+        [CacheOutput(ClientTimeSpanInSeconds = 50, ServerTimeSpanInSeconds = 50)]
         public IEnumerable<Team> Get(int id)
         {
             return Teams;
@@ -183,7 +183,7 @@ Example:
     [AutoInvalidateCacheOutput]
     public class Teams2Controller : ApiController
     {
-        [CacheOutput(ClientTimeSpan = 50, ServerTimeSpan = 50)]
+        [CacheOutput(ClientTimeSpanInSeconds = 50, ServerTimeSpanInSeconds = 50)]
         public IEnumerable<Team> Get()
         {
             return Teams;
@@ -204,7 +204,7 @@ For example:
     [AutoInvalidateCacheOutput(TryMatchType = true)]
     public class TeamsController : ApiController
     {
-        [CacheOutput(ClientTimeSpan = 50, ServerTimeSpan = 50)]
+        [CacheOutput(ClientTimeSpanInSeconds = 50, ServerTimeSpanInSeconds = 50)]
         public IEnumerable<Team> Get()
         {
             return Teams;
@@ -226,7 +226,7 @@ Invalidation on action level is similar - done through attributes. For example:
 
     public class TeamsController : ApiController
     {
-        [CacheOutput(ClientTimeSpan = 50, ServerTimeSpan = 50)]
+        [CacheOutput(ClientTimeSpanInSeconds = 50, ServerTimeSpanInSeconds = 50)]
         public IEnumerable<Team> Get()
         {
             return Teams;
